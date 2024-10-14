@@ -3,6 +3,7 @@ import mysql from 'mysql2';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import bookRoutes from './routes/bookRoutes.js';
 
 //Load environment variables from the .env file
 dotenv.config({ path: 'krche.env' });
@@ -17,10 +18,10 @@ app.use(express.static('uploads'));
 
 // MySQL database connection
 const db = mysql.createConnection({
-    host: process.env.DB_HOST, //database host
+    host: 'localhost', //database host
     user: process.env.DB_USER, //MySQL username
     password: process.env.DB_PASS, //MySQL password
-    database: process.env.DB_NAME //database name
+    database: 'bookclub_db' //database name
   });
 
 
@@ -36,6 +37,8 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
   });
   
+//Use routes
+app.use('/api', bookRoutes);
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
 
