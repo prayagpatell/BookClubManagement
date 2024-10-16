@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bookRoutes from './routes/bookRoutes.js';
 import session from 'express-session';
-import bcrypt from 'bcryptjs';
+//import bcrypt from 'bcryptjs';
 
-//Load environment variables from the .env file
+// Load environment variables from the .env file
 dotenv.config({ path: 'krche.env' });
 
 const app = express();
@@ -20,19 +20,18 @@ app.use(express.static('uploads'));
 
 // MySQL database connection
 const db = mysql.createConnection({
-    host: 'localhost', //database host
-    user: process.env.DB_USER, //MySQL username
-    password: process.env.DB_PASS, //MySQL password
-    database: 'bookclub_db' //database name
-  });
+    host: 'localhost', // database host
+    user: process.env.DB_USER, // MySQL username
+    password: process.env.DB_PASS, // MySQL password
+    database: 'bookclub_db' // database name
+});
 
-//session
+// Session
 app.use(session({
-  secret: 'key', // Replace with key in .env file
+  secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: true,
 }));
-
 
 /**
  * @description Connects to the MySQL database and logs the connection 
@@ -44,13 +43,13 @@ db.connect(err => {
       return;
     }
     console.log('Connected to MySQL database.');
-  });
-  
-//login logic
+});
+
+// Login logic
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  const query = 'SELECT * FROM users WHERE email = ?';
+  const query = 'SELECT * FROM Users WHERE email = ?';
   db.query(query, [email], (err, results) => {
       if (err) {
           console.error('Database error:', err);
@@ -79,9 +78,7 @@ app.post('/login', (req, res) => {
   });
 });
 
-
-
-//Use routes
+// Use routes
 app.use('/api', bookRoutes);
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
@@ -92,4 +89,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-export default app;
+export { app };
