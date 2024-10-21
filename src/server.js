@@ -72,11 +72,90 @@ app.post('/login', (req, res) => {
           id: user.id,
           username: user.email
       };
-
+      
       // Redirect to dashboard.html on successful login
       res.redirect('/dashboard.html');
   });
 });
+
+
+//listclubs
+//listclubs
+// Route to fetch and display data as HTML
+// Route to display clubs in joinbookclub.html
+app.get('/joinbookclub', (req, res) => {
+  const sqlQuery = 'SELECT * FROM Clubs';
+
+  db.query(sqlQuery, (error, results) => {
+      if (error) {
+          return res.status(500).send('Error fetching data');
+      }
+
+      // Construct the HTML content for joinbookclub.html
+      let html = `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Join a Book Club</title>
+          </head>
+          <body>
+              <div class="book-club-container">
+                  <h1>Available Book Clubs</h1>
+                  <div class="book-club-list">`;
+
+      // Loop through each club and generate divs for each one
+      results.forEach(club => {
+          html += `
+                      <div class="book-club">
+                          <h2>${club.club_name}</h2>
+                          <p>A club for those who enjoy various genres.</p> <!-- You can customize this description -->
+                          <form action="/join" method="post">
+                              <input type="hidden" name="club_id" value="${club.club_id}">
+                              <button type="submit">Join Club</button>
+                          </form>
+                      </div>`;
+      });
+
+      // Close the HTML structure
+      html += `
+                  </div>
+              </div>
+          </body>
+          </html>
+      `;
+
+      // Send the generated HTML back to the client
+      res.send(html);
+  });
+});
+
+// Route to handle joining a book club
+app.post('/join', (req, res) => {
+  const clubId = req.body.club_id; // Get the club ID from the request body
+  const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+
+  // SQL query to update the user's club ID
+  const sqlQuery = 'UPDATE Users SET club_id = ? WHERE email = ?';
+  
+  db.query(sqlQuery, [clubId, userEmail], (error, results) => {
+      if (error) {
+          console.error('Error joining club:', error);
+          return res.status(500).send('Error joining club');
+      }
+
+      // Check if the update was successful
+      if (results.affectedRows > 0) {
+          // Successfully joined the club
+          res.redirect('/joinbookclub'); // Redirect to the list of book clubs
+      } else {
+          // User not found or club ID not updated (e.g., already part of a club)
+          res.status(404).send('Could not update club information. Please try again.');
+      }
+  });
+});
+
 
 // Use routes
 app.use('/api', bookRoutes);
