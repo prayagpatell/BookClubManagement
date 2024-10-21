@@ -156,6 +156,17 @@ app.post('/join', (req, res) => {
   });
 });
 
+// Logout logic
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Error logging out');
+        }
+        res.redirect('/index.html'); // Redirect to login page after logout
+    });
+  });
+
 
 // Use routes
 app.use('/api', bookRoutes);
