@@ -97,6 +97,7 @@ app.get('/joinbookclub', (req, res) => {
           <html lang="en">
           <head>
               <meta charset="UTF-8">
+              <link rel="stylesheet" href="styles3.css">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>Join a Book Club</title>
           </head>
@@ -128,6 +129,7 @@ app.get('/joinbookclub', (req, res) => {
 
       // Send the generated HTML back to the client
       res.send(html);
+      // res.redirect('/joinBookClub.html');
   });
 });
 
