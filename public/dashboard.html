@@ -8,8 +8,21 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <h1>Welcome to the Book Club Dashboard!</h1>
+        <h1>Welcome to the Book Club Member Dashboard!</h1>
         <p>We're glad you're here. Explore the latest updates and manage your books.</p>
+
+        <form action="/joinbookclub" method="post">
+            <button type="submit">Join a Book Club</button>
+        </form>
+        
+        <form action="existingBookClub.html" method="post">
+        <button type="submit">View Existing Book Clubs</button>
+    </form>
+
+    <!-- Logout button-->
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
     </div>
 </body>
 </html>
