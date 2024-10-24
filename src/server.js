@@ -99,6 +99,7 @@ app.get('/joinbookclub', (req, res) => {
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>Join a Book Club</title>
+              <link rel="stylesheet" href="styles3.css">
           </head>
           <body>
               <div class="book-club-container">
@@ -181,6 +182,7 @@ app.get('/existingBookClub', (req, res) => {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Your Book Clubs</title>
+                <link rel="stylesheet" href="styles3.css">
             </head>
             <body>
                 <div class="book-club-container">
