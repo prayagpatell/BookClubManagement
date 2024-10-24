@@ -158,6 +158,67 @@ app.post('/join', (req, res) => {
   });
 });
 
+// Route to display the book clubs the user is part of
+app.get('/existingBookClub', (req, res) => {
+    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+  
+    // SQL query to fetch clubs the user is part of
+    const sqlQuery = `
+        SELECT Clubs.club_name 
+        FROM Clubs 
+        INNER JOIN Users ON Clubs.club_id = Users.club_id 
+        WHERE Users.email = ?
+    `;
+  
+    db.query(sqlQuery, [userEmail], (error, results) => {
+        if (error) {
+            return res.status(500).send('Error fetching data');
+        }
+  
+        // Construct the HTML content for existingBookClub.html
+        let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Your Book Clubs</title>
+            </head>
+            <body>
+                <div class="book-club-container">
+                    <h1>Your Book Clubs</h1>
+                    <div class="book-club-list">`;
+  
+        // Check if user is part of any club
+        if (results.length > 0) {
+            // Loop through each club and generate divs for each one
+            results.forEach(club => {
+                html += `
+                            <div class="book-club">
+                                <h2>${club.club_name}</h2>
+                                <p>You are a member of this book club.</p>
+                            </div>`;
+            });
+        } else {
+            html += `
+                        <div class="book-club">
+                            <p>You are not currently part of any book club.</p>
+                        </div>`;
+        }
+  
+        // Close the HTML structure
+        html += `
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+  
+        // Send the generated HTML back to the client
+        res.send(html);
+    });
+  });  
+
 // Logout logic
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
