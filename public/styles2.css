@@ -1,3 +1,4 @@
+/* General styling */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -9,6 +10,7 @@ body {
     background-image: linear-gradient(to bottom, #e44a39, #b665c6);
 }
 
+/* Navbar styling */
 .navbar {
     width: 100%;
     background-color: black;
@@ -27,22 +29,63 @@ body {
     color: yellow;
 }
 
+/* Container for main content */
 .dashboard-container {
     background-color: white;
     padding: 40px;
     border-radius: 12px;
     width: 450px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     font-size: 28px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 p {
-    font-size: 18px;
+    font-size: 16px;
     color: gray;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+}
+
+/* Styling for the form sections */
+.form-section {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
 }

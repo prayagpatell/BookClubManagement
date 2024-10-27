@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Review</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <nav class="navbar">
+        <!-- <a href="/joinbookclub">Join a Book Club</a> -->
+        <!-- <a href="/existingBookClub">View Existing Clubs</a> -->
+        <!-- <a href="/addBook">Add Book</a> -->
+        <a href="/createViewEvent">Create/View Event</a>
+        <a href="addMember.html">Add Members</a>
+        <a href="index.html">Logout</a>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>Search Book and Write a Review</h1>
+        <p>Find books to read, review, and share your thoughts.</p>
+
+        <form action="/searchBook" method="get" class="form-section">
+            <label for="searchQuery">Search Book:</label>
+            <input type="text" id="searchQuery" name="searchQuery" placeholder="Enter book title or author" required>
+            <button type="submit">Search</button>
+        </form>
+        
+        <!-- <form action="/viewEvents" method="get" class="form-section">
+            <button type="submit">View Events</button>
+        </form> -->
+    </div>
+</body>
+</html>
