@@ -3,10 +3,28 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
     background-image: linear-gradient(to bottom, #e44a39, #b665c6);
+}
+
+.navbar {
+    width: 100%;
+    background-color: black;
+    padding: 15px;
+    text-align: center;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+.navbar a:hover {
+    color: yellow;
 }
 
 .dashboard-container {
@@ -15,7 +33,7 @@ body {
     border-radius: 12px;
     width: 450px;
     text-align: center;
-    margin: 20px;
+    margin-top: 20px;
 }
 
 h1 {
@@ -27,18 +45,4 @@ p {
     font-size: 18px;
     color: gray;
     margin-bottom: 30px;
-}
-
-button {
-    background-color: #2575fc;
-    color: white;
-    padding: 12px 20px;
-    margin: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #6a11cb;
 }
