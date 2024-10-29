@@ -44,6 +44,7 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
 });
 
+//route for all users
 // Login logic
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
@@ -63,7 +64,7 @@ app.post('/login', (req, res) => {
 
       // Compare the entered password with the plain text password in the database
       if (user.password !== password) {
-          return res.status(401).send('Invalid username or password');
+          return res.status(401).json({message: 'Invalid username or password'});
       }
 
       // Store user info in session
@@ -73,7 +74,14 @@ app.post('/login', (req, res) => {
       };
       
       // Redirect to dashboard.html on successful login
-      res.redirect('/dashboard.html');
+      if (user.role === 'admin') {
+            res.redirect('/adminDashboard.html');
+        } else if (user.role === 'moderator') {
+            res.redirect('/modDashboard.html');
+        }
+        else {
+            res.redirect('/dashboard.html');
+        }
   });
 });
 
@@ -232,6 +240,47 @@ app.get('/logout', (req, res) => {
   });
 
 
+//Admin Routes
+//Route to handle the addition of a new book
+/* 
+app.post('/addBook', (req, res) => {
+    const { title, author, pub_date } = req.body;
+
+//SQL Query to insert a new boook into the database
+const query = 'INSERT INTO Books (title, author, pub_date) VALUES (?, ?, ?)';
+db.query(query, [title, author, pub_date], (err, results) => {
+    if (err) {
+        console.error('Error adding book:', err);
+        return res.status(500).send('Error adding book');
+    } else {
+        res.send('Book added successfully');
+    }
+});
+});
+*/
+// Route to add a new book
+app.post('/addBook', (req, res) => {
+    // Destructure form fields from the request body
+    const { bookTitle, authorName } = req.body;
+  
+    // Define the current year as the publication date
+    const publicationDate = new Date().getFullYear();
+  
+    // Define the SQL query to insert the book
+    const insertQuery = 'INSERT INTO Books (title, author, `pub_date`) VALUES (?, ?, ?)';
+  
+    // Execute the query with the form data
+    db.query(insertQuery, [bookTitle, authorName, publicationDate], (err, results) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).send('Error adding the book');
+      }
+  
+      // If successful, redirect to a page or show a success message
+      res.redirect('/books'); // Redirect to a page where you list all books, for example
+    });
+  });
+  
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
 

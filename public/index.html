@@ -5,11 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Club Login</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                // Redirect or show success message
+                window.location.href = response.url; // Use the redirected URL
+            } else {
+                const errorText = await response.text();
+                console.error('Error:', errorText);
+                alert('Invalid username or password'); // Display error message to the user
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="login-container">
         <h2>Book Club Login</h2>
-        <form id="loginForm" action="/login" method="post">
+        <form id="loginForm" onsubmit="handleLogin(event)">
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" required>
 

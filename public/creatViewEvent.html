@@ -29,19 +29,63 @@
         <!-- <form action="/viewEvents" method="get" class="form-section">
             <button type="submit">View Events</button>
         </form> -->
+<!--<div class="form-section add-book-section">
+            <h2>Add a New Book</h2>
+            <form id="addBookForm">
+                <label for="bookTitle">Book Title:</label>
+                <input type="text" id="title" name="title" placeholder="Enter book title" required>
 
+                <label for="authorName">Author:</label>
+                <input type="text" id="author" name="author" placeholder="Enter author name" required>
+
+                <label for="pub_date">Publication Year:</label>
+                <input type="number" id="pub_date" name="pub_date" placeholder="Enter publication date" required><br>
+
+                <button type="submit" class="form-button">Add Book</button>
+            </form>
+            <div id="message"></div>
+        </div>
+        <script>
+            document.getElementById('addBookForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const bookTitle = document.getElementById('bookTitle').value;
+                const authorName = document.getElementById('authorName').value;
+                const pub_date = document.getElementById('pub_date').value;
+                
+                const response = await fetch('/addBook', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ bookTitle, authorName, pub_date })
+                });
+
+                const messageDiv = document.getElementById('message');
+                if (response.ok){
+                    messageDiv.textContent = 'Book added successfully';
+                    messageDiv.style.color = 'green';
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error:', errorText);
+                    messageDiv.textContent = 'Error adding book: ' + errorText;
+                    messageDiv.style.color = 'red';
+                }
+            });
+        </script>
+        -->
         <div class="form-section add-book-section">
             <h2>Add a New Book</h2>
             <form action="/addBook" method="post">
                 <label for="bookTitle">Book Title:</label>
                 <input type="text" id="bookTitle" name="bookTitle" placeholder="Enter book title" required>
-
+        
                 <label for="authorName">Author:</label>
                 <input type="text" id="authorName" name="authorName" placeholder="Enter author name" required>
-
-                <label for="discussionTopic">Discussion Topic:</label>
-                <textarea id="discussionTopic" name="discussionTopic" placeholder="Enter discussion topic" required></textarea>
-
+        
+                <label for="publicationDate">Publication Date:</label>
+                <input type="date" id="publicationDate" name="publicationDate" placeholder="Enter publication date" required>
+        
                 <button type="submit" class="form-button">Add Book</button>
             </form>
         </div>
