@@ -3,7 +3,6 @@ import mysql from 'mysql2';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import bookRoutes from './routes/bookRoutes.js';
 import session from 'express-session';
 //import bcrypt from 'bcryptjs';
 
@@ -233,8 +232,6 @@ app.get('/logout', (req, res) => {
   });
 
 
-// Use routes
-app.use('/api', bookRoutes);
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
 
