@@ -27,6 +27,65 @@ body {
     color: yellow;
 }
 
+.dashboard-container {
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+    margin-top: 20px;
+    color: black;
+}
+
+.form-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-form, .add-book-section {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.search-form h2, .add-book-section h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.form-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.form-button:hover {
+    background-color: #218838;
+}
+
 .book-club-container {
     background-color: white;
     padding: 40px;
@@ -34,7 +93,7 @@ body {
     width: 80%;
     max-width: 800px;
     text-align: center;
-    margin-top: 20px; /* Added margin-top for spacing */
+    margin-top: 20px;
 }
 
 .book-club-container h1 {
@@ -95,16 +154,4 @@ body {
 .discussion-board p {
     font-size: 14px;
     color: #555;
-}
-
-textarea {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-button {
-    margin-top: 10px;
 }

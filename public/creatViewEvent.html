@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Review</title>
+    <link rel="stylesheet" href="styles4.css">
+</head>
+<body>
+    <nav class="navbar">
+        <!-- <a href="/joinbookclub">Join a Book Club</a> -->
+        <!-- <a href="/existingBookClub">View Existing Clubs</a> -->
+        <!-- <a href="/addBook">Add Book</a> -->
+        <a href="/createViewEvent">Create/View Event</a>
+        <a href="addMember.html">Add Members</a>
+        <a href="index.html">Logout</a>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>Search Book and Write a Review</h1>
+        <p>Find books to read, review, and share your thoughts.</p>
+
+        <form action="/searchBook" method="get" class="form-section">
+            <label for="searchQuery">Search Book:</label>
+            <input type="text" id="searchQuery" name="searchQuery" placeholder="Enter book title or author" required>
+            <button type="submit">Search</button>
+        </form>
+        
+        <!-- <form action="/viewEvents" method="get" class="form-section">
+            <button type="submit">View Events</button>
+        </form> -->
+
+        <div class="form-section add-book-section">
+            <h2>Add a New Book</h2>
+            <form action="/addBook" method="post">
+                <label for="bookTitle">Book Title:</label>
+                <input type="text" id="bookTitle" name="bookTitle" placeholder="Enter book title" required>
+
+                <label for="authorName">Author:</label>
+                <input type="text" id="authorName" name="authorName" placeholder="Enter author name" required>
+
+                <label for="discussionTopic">Discussion Topic:</label>
+                <textarea id="discussionTopic" name="discussionTopic" placeholder="Enter discussion topic" required></textarea>
+
+                <button type="submit" class="form-button">Add Book</button>
+            </form>
+        </div>
+
+        <div class="book-club-container">
+            <h1>Book Clubs and Discussions</h1>
+            <div class="book-club-list">
+    
+                <div class="book-club">
+                    <h2>Book Title 1</h2>
+                    <p>Author: Author Name 1</p>
+                    <div class="discussion-board">
+                        <h3>Discussion Board</h3>
+                        <p><strong>User1:</strong> Comment 1</p>
+                        <p><strong>User2:</strong> Comment 2</p>
+                        <textarea placeholder="Add a comment..."></textarea>
+                        <button>Add Comment</button>
+                    </div>
+                </div>
+    
+                <div class="book-club">
+                    <h2>Book Title 2</h2>
+                    <p>Author: Author Name 2</p>
+                    <div class="discussion-board">
+                        <h3>Discussion Board</h3>
+                        <p><strong>User3:</strong> Comment 3</p>
+                        <p><strong>User4:</strong> Comment 4</p>
+                        <textarea placeholder="Add a comment..."></textarea>
+                        <button>Add Comment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
