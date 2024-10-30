@@ -4,6 +4,8 @@
     box-sizing: border-box;
 }
 
+
+
 body {
     font-family: Arial, sans-serif;
     background-image: linear-gradient(to bottom, #e44a39, #b665c6);
@@ -53,3 +55,4 @@ button {
 button:hover {
     background-color: #45a049;
 }
+

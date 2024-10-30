@@ -349,6 +349,71 @@ app.get('/viewUsersWithCLubs', (req, res) => {
     });
 });
 
+//addNewMembers
+
+app.post('/addMember', (req, res) => {
+    const { name, email, role, password } = req.body;
+    
+    
+    const clubId = req.session.user.club_id;
+
+    
+    if (!name || !email || !role || !password) {
+        return res.status(400).send('All fields are required.');
+    }
+
+   
+    const sqlQuery = `INSERT INTO Users (email, name, role, password, club_id) VALUES (?, ?, ?, ?, ?)`;
+
+   
+    db.query(sqlQuery, [email, name, role, password, clubId], (err, result) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).send('Internal server error');
+        }
+
+        
+        res.redirect('/viewUsersWithClubs');
+    });
+});
+
+//updatebookinclub
+app.post('/updateCurrentBook', (req, res) => {
+    const { clubId, bookId } = req.body;
+    const userEmail = req.session.user.username;
+
+    // First, confirm that the user belongs to the club they are trying to update
+    const userClubQuery = `
+        SELECT club_id FROM Users WHERE email = ? AND club_id = ?
+    `;
+
+    db.query(userClubQuery, [userEmail, clubId], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).send('Error checking user membership.');
+        }
+
+        if (results.length === 0) {
+            return res.status(403).send('You are not a member of this club.');
+        }
+
+        // Update the current book for the club
+        const updateClubQuery = `
+            UPDATE Clubs SET current_book = ? WHERE club_id = ?
+        `;
+
+        db.query(updateClubQuery, [bookId, clubId], (err, updateResult) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).send('Error updating the book for the club.');
+            }
+
+            res.send('Book successfully added to the club.');
+        });
+    });
+});
+
+
 
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
