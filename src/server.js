@@ -110,6 +110,11 @@ app.get('/joinbookclub', (req, res) => {
               <link rel="stylesheet" href="styles3.css">
           </head>
           <body>
+          <nav class="navbar">
+        <a href="/joinBookClub">Join a Book Club</a>
+        <a href="/existingBookClub">Your Club</a>
+        <a href="/logout">Logout</a>
+    </nav>
               <div class="book-club-container">
                   <h1>Available Book Clubs</h1>
                   <div class="book-club-list">`;
@@ -168,8 +173,7 @@ app.post('/join', (req, res) => {
 
 // Route to display the book clubs the user is part of
 app.get('/existingBookClub', (req, res) => {
-    const userEmail = req.session.user.email; // Get the logged-in user's email from the session
-  
+    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
     // SQL query to fetch clubs the user is part of
     const sqlQuery = `
         SELECT Clubs.club_name, Books.title AS current_book 
@@ -181,9 +185,10 @@ app.get('/existingBookClub', (req, res) => {
   
     db.query(sqlQuery, [userEmail], (error, results) => {
         if (error) {
+            console.error('Error fetching data:', error);
             return res.status(500).send('Error fetching data');
         }
-  
+
         // Construct the HTML content for existingBookClub.html
         let html = `
             <!DOCTYPE html>
@@ -195,6 +200,11 @@ app.get('/existingBookClub', (req, res) => {
                 <link rel="stylesheet" href="styles3.css">
             </head>
             <body>
+            <nav class="navbar">
+        <a href="/joinBookClub">Join a Book Club</a>
+        <a href="/existingBookClub">Your Club</a>
+        <a href="/logout">Logout</a>
+    </nav>
                 <div class="book-club-container">
                     <h1>Your Book Clubs</h1>
                     <div class="book-club-list">`;
@@ -298,10 +308,10 @@ app.get('/viewUsersWithCLubs', (req, res) => {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Users and Book Clubs</title>
-                <link rel="stylesheet" href="styles2.css">
+                <link rel="stylesheet" href="styles3.css">
             </head>
             <body>
-                <div class="user-club-container">
+                <div class="book-club-container">
                     <h1>Users and Their Book Clubs</h1>
                     <table>
                         <tr>

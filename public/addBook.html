@@ -14,12 +14,7 @@
                 bookList.innerHTML = '';
                 books.forEach(book => {
                     const listItem = document.createElement('li');
-                    listItem.innerHTML = `${book.title} by ${book.author} <select onchange="addBookToClub(${book.book_id}, this.value)">
-                        <option value="">Select Club</option>
-                        <option value="Club 1">Club 1</option>
-                        <option value="Club 2">Club 2</option>
-                        <option value="Club 3">Club 3</option>
-                    </select>`;
+                    listItem.innerHTML = `${book.title} by ${book.author} <button onclick="addBookToClub(${book.book_id})">Add to Club</button>`;
                     bookList.appendChild(listItem);
                 });
             } catch (error) {
@@ -27,10 +22,21 @@
             }
         }
 
-        function addBookToClub(bookId, clubName) {
-            if (clubName) {
-                // Here you would typically send this data to your server
-                alert(`Book ID ${bookId} added to club ${clubName}`);
+        async function addBookToClub(bookId) {
+            const clubId = 1; // Replace with the actual club ID you want to add the book to
+            try {
+                const response = await fetch('/updateCurrentBook', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ clubId, bookId })
+                });
+
+                const result = await response.text();
+                alert(result);
+            } catch (error) {
+                console.error('Error adding book to club:', error);
             }
         }
 
@@ -40,12 +46,13 @@
 <body>
     <nav class="navbar">
         <a href="addBook.html">Add Book</a>
-        <a href="becomeMember.html">Add Members</a>
+        <a href="/joinBookClub">Join a Book Club</a>
+        <a href="/existingBookClub">Your Club</a>
         <a href="/logout">Logout</a>
     </nav>
 
     <div class="book-club-container">
-        <h1>Add a Book to a Club</h1>
+        <h1>Add a Book to Your Club</h1>
         <ul id="book-list">
             <!-- Books will be dynamically inserted here -->
         </ul>

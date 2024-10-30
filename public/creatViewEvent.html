@@ -11,69 +11,13 @@
         <!-- <a href="/joinbookclub">Join a Book Club</a> -->
         <!-- <a href="/existingBookClub">View Existing Clubs</a> -->
         <!-- <a href="/addBook">Add Book</a> -->
-        <a href="/createViewEvent">Create/View Event</a>
+        <a href="creatViewEvent.html">Create/View Event</a>
         <a href="becomeMember.html">Add Members</a>
         <a href="index.html">Logout</a>
     </nav>
 
     <div class="dashboard-container">
-        <h1>Search Book and Write a Review</h1>
-        <p>Find books to read, review, and share your thoughts.</p>
-
-        <form action="/searchBook" method="get" class="form-section">
-            <label for="searchQuery">Search Book:</label>
-            <input type="text" id="searchQuery" name="searchQuery" placeholder="Enter book title or author" required>
-            <button type="submit">Search</button>
-        </form>
         
-        <!-- <form action="/viewEvents" method="get" class="form-section">
-            <button type="submit">View Events</button>
-        </form> -->
-<!--<div class="form-section add-book-section">
-            <h2>Add a New Book</h2>
-            <form id="addBookForm">
-                <label for="bookTitle">Book Title:</label>
-                <input type="text" id="title" name="title" placeholder="Enter book title" required>
-
-                <label for="authorName">Author:</label>
-                <input type="text" id="author" name="author" placeholder="Enter author name" required>
-
-                <label for="pub_date">Publication Year:</label>
-                <input type="number" id="pub_date" name="pub_date" placeholder="Enter publication date" required><br>
-
-                <button type="submit" class="form-button">Add Book</button>
-            </form>
-            <div id="message"></div>
-        </div>
-        <script>
-            document.getElementById('addBookForm').addEventListener('submit', async function(event) {
-                event.preventDefault();
-
-                const bookTitle = document.getElementById('bookTitle').value;
-                const authorName = document.getElementById('authorName').value;
-                const pub_date = document.getElementById('pub_date').value;
-                
-                const response = await fetch('/addBook', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ bookTitle, authorName, pub_date })
-                });
-
-                const messageDiv = document.getElementById('message');
-                if (response.ok){
-                    messageDiv.textContent = 'Book added successfully';
-                    messageDiv.style.color = 'green';
-                } else {
-                    const errorText = await response.text();
-                    console.error('Error:', errorText);
-                    messageDiv.textContent = 'Error adding book: ' + errorText;
-                    messageDiv.style.color = 'red';
-                }
-            });
-        </script>
-        -->
         <div class="form-section add-book-section">
             <h2>Add a New Book</h2>
             <form action="/addBook" method="post">
@@ -89,7 +33,7 @@
                 <button type="submit" class="form-button">Add Book</button>
             </form>
         </div>
-
+<!-- back log discussion board 
         <div class="book-club-container">
             <h1>Book Clubs and Discussions</h1>
             <div class="book-club-list">
@@ -117,7 +61,7 @@
                         <button>Add Comment</button>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> -->
+        </div> 
 </body>
 </html>
