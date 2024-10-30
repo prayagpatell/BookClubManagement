@@ -384,7 +384,7 @@ app.post('/updateCurrentBook', (req, res) => {
 
     // First, confirm that the user belongs to the club they are trying to update
     const userClubQuery = `
-        SELECT club_id FROM Users WHERE email = ? AND club_id = ?
+        SELECT club_id FROM Users WHERE email = ? 
     `;
 
     db.query(userClubQuery, [userEmail, clubId], (err, results) => {
