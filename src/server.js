@@ -287,7 +287,7 @@ app.post('/addBook', (req, res) => {
 app.get('/viewUsersWithCLubs', (req, res) => {
     // SQL query to fetch users along with their club names
     const sqlQuery = `
-        SELECT Users.name, Clubs.club_name
+        SELECT Users.name AS user_name, Clubs.club_name
         FROM Users
         LEFT JOIN Clubs ON Users.club_id = Clubs.club_id`;
     
@@ -318,7 +318,7 @@ app.get('/viewUsersWithCLubs', (req, res) => {
         // Check if any results were returned
         if (results.length > 0) {
             // Loop through each user and club and create table rows 
-            results.forEach(record => {
+            results.forEach(user => {
                 html += `
                 <tr>
                     <td>${user.user_name}</td>
