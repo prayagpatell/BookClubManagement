@@ -4,11 +4,9 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import session from 'express-session';
-//import bcrypt from 'bcryptjs';
 
 // Load environment variables from the .env file
 dotenv.config({ path: 'krche.env' });
-
 const app = express();
 
 // Middleware to parse request body
@@ -19,10 +17,10 @@ app.use(express.static('uploads'));
 
 // MySQL database connection
 const db = mysql.createConnection({
-    host: 'localhost', // database host
-    user: process.env.DB_USER, // MySQL username
-    password: process.env.DB_PASS, // MySQL password
-    database: 'bookclub_db' // database name
+    host: 'localhost', 
+    user: process.env.DB_USER, 
+    password: process.env.DB_PASS, 
+    database: 'bookclub_db' 
 });
 
 // Session
@@ -44,7 +42,7 @@ db.connect(err => {
     console.log('Connected to MySQL database.');
 });
 
-//route for all users
+
 // Login logic
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
@@ -85,10 +83,6 @@ app.post('/login', (req, res) => {
   });
 });
 
-
-//listclubs
-//listclubs
-// Route to fetch and display data as HTML
 // Route to display clubs in joinbookclub.html
 app.get('/joinbookclub', (req, res) => {
   const sqlQuery = 'SELECT * FROM Clubs';
@@ -142,14 +136,13 @@ app.get('/joinbookclub', (req, res) => {
 
       // Send the generated HTML back to the client
       res.send(html);
-      // res.redirect('/joinBookClub.html');
   });
 });
 
 // Route to handle joining a book club
 app.post('/join', (req, res) => {
-  const clubId = req.body.club_id; // Get the club ID from the request body
-  const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+  const clubId = req.body.club_id; 
+  const userEmail = req.session.user.username; 
 
   // SQL query to update the user's club ID
   const sqlQuery = 'UPDATE Users SET club_id = ? WHERE email = ?';
@@ -162,10 +155,8 @@ app.post('/join', (req, res) => {
 
       // Check if the update was successful
       if (results.affectedRows > 0) {
-          // Successfully joined the club
-          res.redirect('/joinbookclub'); // Redirect to the list of book clubs
+          res.redirect('/joinbookclub');
       } else {
-          // User not found or club ID not updated (e.g., already part of a club)
           res.status(404).send('Could not update club information. Please try again.');
       }
   });
@@ -173,7 +164,7 @@ app.post('/join', (req, res) => {
 
 // Route to display the book clubs the user is part of
 app.get('/existingBookClub', (req, res) => {
-    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+    const userEmail = req.session.user.username;
     // SQL query to fetch clubs the user is part of
     const sqlQuery = `
         SELECT Clubs.club_name, Books.title AS current_book 
@@ -226,7 +217,6 @@ app.get('/existingBookClub', (req, res) => {
                             <p>You are not currently part of any book club.</p>
                         </div>`;
         }
-  
         // Close the HTML structure
         html += `
                     </div>
@@ -234,7 +224,6 @@ app.get('/existingBookClub', (req, res) => {
             </body>
             </html>
         `;
-  
         // Send the generated HTML back to the client
         res.send(html);
     });
@@ -247,18 +236,14 @@ app.get('/logout', (req, res) => {
             console.error('Error destroying session:', err);
             return res.status(500).send('Error logging out');
         }
-        res.redirect('/index.html'); // Redirect to login page after logout
+        res.redirect('/index.html'); 
     });
   });
 
 
-//Book Routes
 // Route to add a new book
 app.post('/addBook', (req, res) => {
-    // Destructure form fields from the request body
     const { bookTitle, authorName } = req.body;
-  
-    // Define the current year as the publication date
     const publicationDate = new Date().getFullYear();
   
     // Define the SQL query to insert the book
@@ -268,11 +253,9 @@ app.post('/addBook', (req, res) => {
     db.query(insertQuery, [bookTitle, authorName, publicationDate], (err, results) => {
       if (err) {
         console.error('Database error:', err);
-        return res.status(500).send('Error adding the book');
+        return res.status(500).json({ message: 'Error adding the book' });
       }
-  
-      // If successful, redirect to a page or show a success message
-      res.redirect('/books'); // Redirect to a page where you list all books, for example
+      res.json({ message: 'Book has been added.' });
     });
   });
 
@@ -344,13 +327,11 @@ app.get('/viewUsersWithCLubs', (req, res) => {
             </html>
         `;
 
-        // Send the generated HTML back to the client
         res.send(html)
     });
 });
 
 //addNewMembers
-
 app.post('/addMember', (req, res) => {
     const { name, email, role, password } = req.body;
     
@@ -378,49 +359,11 @@ app.post('/addMember', (req, res) => {
 });
 
 //updatebookinclub
-/*app.post('/updateCurrentBook', (req, res) => {
-    const { clubId, bookId } = req.body;
-    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
-
-    // Confirm that the user is a member of the given clubId
-    const userClubQuery = `
-        SELECT club_id FROM Users WHERE email = ?
-    `;
-    console.log('Email: ${userEmail}');
-
-    db.query(userClubQuery, [userEmail], (err, results) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).send('Error checking user membership.');
-        }
-
-        if (results.length === 0 || results[0].club_id !== clubId) {
-            // If no club or the club_id doesn't match the one given
-            return res.status(403).send('You are not a member of this club.');
-        }
-
-        // Update the current book for the specified club
-        const updateClubQuery = `
-            UPDATE Clubs SET current_book = ? WHERE club_id = ?
-        `;
-
-        db.query(updateClubQuery, [bookId, clubId], (err, updateResult) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.status(500).send('Error updating the book for the club.');
-            }
-
-            res.send('Book successfully added to the club.');
-        });
-    });
-});
-
-*/
 app.post('/updateCurrentBook', (req, res) => {
     const { bookId } = req.body;
-    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+    const userEmail = req.session.user.username;
 
-    // Step 1: Find the club that the logged-in user is part of
+    //Find the club that the logged-in user is part of
     const findUserClubQuery = `
         SELECT club_id FROM Users WHERE email = ?
     `;
@@ -438,7 +381,7 @@ app.post('/updateCurrentBook', (req, res) => {
         // Get the user's club ID
         const userClubId = results[0].club_id;
 
-        // Step 2: Update the current book for the user's club
+        //update the current book for the user's club
         const updateClubQuery = `
             UPDATE Clubs SET current_book = ? WHERE club_id = ?
         `;

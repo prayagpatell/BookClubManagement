@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script>
         async function handleLogin(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault(); 
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -22,11 +22,11 @@
 
             if (response.ok) {
                 // Redirect or show success message
-                window.location.href = response.url; // Use the redirected URL
+                window.location.href = response.url; 
             } else {
                 const errorText = await response.text();
                 console.error('Error:', errorText);
-                alert('Invalid username or password'); // Display error message to the user
+                alert('Invalid username or password'); 
             }
         }
     </script>
