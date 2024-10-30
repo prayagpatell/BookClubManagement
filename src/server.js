@@ -280,7 +280,69 @@ app.post('/addBook', (req, res) => {
       res.redirect('/books'); // Redirect to a page where you list all books, for example
     });
   });
-  
+ 
+// Route to view all users and their respective book clubs
+app.get('/viewUsersWithCLubs', (req, res) => {
+    // SQL query to fetch users along with their club names
+    const sqlQuery = `
+        SELECT Users.name, Clubs.club_name
+        FROM Users
+        LEFT JOIN Clubs ON Users.club_id = Clubs.club_id`;
+    
+    db.query(sqlQuery, (error, results) => {
+        if (error) {
+            console.error ('Error fetching user and club data:', error);
+            return res.status(500).send('Error fetching data');
+        }
+        // Construct the HTML content for displaying users and their clubs
+        let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Users and Book Clubs</title>
+                <link rel="stylesheet" href="styles2.css">
+            </head>
+            <body>
+                <div class="user-club-container">
+                    <h1>Users and Their Book Clubs</h1>
+                    <table>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Book Club</th>
+                        </tr>`;
+
+        // Check if any results were returned
+        if (results.length > 0) {
+            // Loop through each user and club and create table rows 
+            results.forEach(record => {
+                html += `
+                <tr>
+                    <td>${user.user_name}</td>
+                    <td>${user.club_name || 'No Club'}</td>
+                </tr>`;
+            });
+        } else {
+            html += `
+                <tr>
+                    <td colspan="2">No users found.</td>
+                </tr>`;
+        }
+
+        // Close the HTML structure
+        html += `
+                        </table>
+                    </div>
+                </body>
+            </html>
+        `;
+
+        // Send the generated HTML back to the client
+        res.send(html)
+    });
+});
+
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
 
