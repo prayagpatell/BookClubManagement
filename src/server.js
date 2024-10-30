@@ -242,24 +242,7 @@ app.get('/logout', (req, res) => {
   });
 
 
-//Admin Routes
-//Route to handle the addition of a new book
-/* 
-app.post('/addBook', (req, res) => {
-    const { title, author, pub_date } = req.body;
-
-//SQL Query to insert a new boook into the database
-const query = 'INSERT INTO Books (title, author, pub_date) VALUES (?, ?, ?)';
-db.query(query, [title, author, pub_date], (err, results) => {
-    if (err) {
-        console.error('Error adding book:', err);
-        return res.status(500).send('Error adding book');
-    } else {
-        res.send('Book added successfully');
-    }
-});
-});
-*/
+//Book Routes
 // Route to add a new book
 app.post('/addBook', (req, res) => {
     // Destructure form fields from the request body
@@ -282,6 +265,17 @@ app.post('/addBook', (req, res) => {
       res.redirect('/books'); // Redirect to a page where you list all books, for example
     });
   });
+
+// Route to get all books
+app.get('/books', (req, res) => {
+    const sql = 'SELECT * FROM Books';
+    db.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.json(results);
+    });
+});
  
 // Route to view all users and their respective book clubs
 app.get('/viewUsersWithCLubs', (req, res) => {
@@ -344,6 +338,7 @@ app.get('/viewUsersWithCLubs', (req, res) => {
         res.send(html)
     });
 });
+
 
 // Serve the static HTML/CSS frontend
 app.use(express.static('public'));
