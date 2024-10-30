@@ -168,13 +168,14 @@ app.post('/join', (req, res) => {
 
 // Route to display the book clubs the user is part of
 app.get('/existingBookClub', (req, res) => {
-    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+    const userEmail = req.session.user.email; // Get the logged-in user's email from the session
   
     // SQL query to fetch clubs the user is part of
     const sqlQuery = `
-        SELECT Clubs.club_name 
+        SELECT Clubs.club_name, Books.title AS current_book 
         FROM Clubs 
         INNER JOIN Users ON Clubs.club_id = Users.club_id 
+        LEFT JOIN Books ON Clubs.current_book = Books.book_id
         WHERE Users.email = ?
     `;
   
@@ -205,6 +206,7 @@ app.get('/existingBookClub', (req, res) => {
                 html += `
                             <div class="book-club">
                                 <h2>${club.club_name}</h2>
+                                <p>Currently Reading: ${club.current_book ? club.current_book: 'No book assigned'}</p>
                                 <p>You are a member of this book club.</p>
                             </div>`;
             });
