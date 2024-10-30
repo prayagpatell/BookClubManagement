@@ -378,26 +378,28 @@ app.post('/addMember', (req, res) => {
 });
 
 //updatebookinclub
-app.post('/updateCurrentBook', (req, res) => {
+/*app.post('/updateCurrentBook', (req, res) => {
     const { clubId, bookId } = req.body;
-    const userEmail = req.session.user.username;
+    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
 
-    // First, confirm that the user belongs to the club they are trying to update
+    // Confirm that the user is a member of the given clubId
     const userClubQuery = `
-        SELECT club_id FROM Users WHERE email = ? 
+        SELECT club_id FROM Users WHERE email = ?
     `;
+    console.log('Email: ${userEmail}');
 
-    db.query(userClubQuery, [userEmail, clubId], (err, results) => {
+    db.query(userClubQuery, [userEmail], (err, results) => {
         if (err) {
             console.error('Database error:', err);
             return res.status(500).send('Error checking user membership.');
         }
 
-        if (results.length === 0) {
+        if (results.length === 0 || results[0].club_id !== clubId) {
+            // If no club or the club_id doesn't match the one given
             return res.status(403).send('You are not a member of this club.');
         }
 
-        // Update the current book for the club
+        // Update the current book for the specified club
         const updateClubQuery = `
             UPDATE Clubs SET current_book = ? WHERE club_id = ?
         `;
@@ -409,6 +411,45 @@ app.post('/updateCurrentBook', (req, res) => {
             }
 
             res.send('Book successfully added to the club.');
+        });
+    });
+});
+
+*/
+app.post('/updateCurrentBook', (req, res) => {
+    const { bookId } = req.body;
+    const userEmail = req.session.user.username; // Get the logged-in user's email from the session
+
+    // Step 1: Find the club that the logged-in user is part of
+    const findUserClubQuery = `
+        SELECT club_id FROM Users WHERE email = ?
+    `;
+
+    db.query(findUserClubQuery, [userEmail], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).send('Error checking user membership.');
+        }
+
+        if (results.length === 0 || !results[0].club_id) {
+            return res.status(403).send('You are not a member of any club.');
+        }
+
+        // Get the user's club ID
+        const userClubId = results[0].club_id;
+
+        // Step 2: Update the current book for the user's club
+        const updateClubQuery = `
+            UPDATE Clubs SET current_book = ? WHERE club_id = ?
+        `;
+
+        db.query(updateClubQuery, [bookId, userClubId], (err, updateResult) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).send('Error updating the book for the club.');
+            }
+
+            res.send('Book successfully added to your club.');
         });
     });
 });
